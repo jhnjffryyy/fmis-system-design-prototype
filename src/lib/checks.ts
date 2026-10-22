@@ -6,6 +6,11 @@ export interface PricePoint {
   /** ms since epoch (UTC) */
   t: number
   price: number
+  open?: number
+  high?: number
+  low?: number
+  vol?: number
+  change?: number
 }
 
 export interface Problem {
@@ -51,6 +56,11 @@ export function checkFile(text: string): CheckResult {
   const { headers, records } = parseCsv(text)
   const di = headers.indexOf('Date')
   const pi = headers.indexOf('Price')
+  const oi = headers.indexOf('Open')
+  const hi = headers.indexOf('High')
+  const li = headers.indexOf('Low')
+  const vi = headers.indexOf('Vol.')
+  const ci = headers.indexOf('Change %')
   if (di < 0 || pi < 0) {
     return {
       ok: false,
@@ -105,7 +115,52 @@ export function checkFile(text: string): CheckResult {
       }
       prevT = d.t
     }
-    parsed.push({ iso: d.iso, t: d.t, price: Number.isNaN(price) ? 0 : price })
+    let vol: number | undefined
+    if (vi >= 0) {
+      const rawVol = (r[vi] ?? '').trim()
+      if (rawVol) {
+        const num = parseFloat(rawVol.replace(/,/g, ''))
+        if (!Number.isNaN(num)) {
+          if (/m$/i.test(rawVol)) vol = num
+          else if (/k$/i.test(rawVol)) vol = num / 1000
+          else if (/b$/i.test(rawVol)) vol = num * 1000
+          else vol = num
+        }
+      }
+    }
+    let change: number | undefined
+    if (ci >= 0) {
+      const rawChg = (r[ci] ?? '').trim().replace('%', '')
+      if (rawChg) {
+        const num = parseFloat(rawChg)
+        if (!Number.isNaN(num)) change = num
+      }
+    }
+    let open: number | undefined
+    if (oi >= 0 && r[oi]?.trim()) {
+      const num = parseFloat(r[oi].trim())
+      if (!Number.isNaN(num)) open = num
+    }
+    let high: number | undefined
+    if (hi >= 0 && r[hi]?.trim()) {
+      const num = parseFloat(r[hi].trim())
+      if (!Number.isNaN(num)) high = num
+    }
+    let low: number | undefined
+    if (li >= 0 && r[li]?.trim()) {
+      const num = parseFloat(r[li].trim())
+      if (!Number.isNaN(num)) low = num
+    }
+    parsed.push({
+      iso: d.iso,
+      t: d.t,
+      price: Number.isNaN(price) ? 0 : price,
+      open,
+      high,
+      low,
+      vol,
+      change,
+    })
   })
 
   const rows = parsed.filter((p): p is PricePoint => p !== null).sort((a, b) => a.t - b.t)

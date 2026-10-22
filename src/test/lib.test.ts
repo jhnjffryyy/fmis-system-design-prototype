@@ -149,6 +149,31 @@ describe('analyze', () => {
   it('produces a 30 point forecast on the next weekdays', () => {
     expect(a.forecast).toHaveLength(30)
     expect(a.forecast[29].v).toBeCloseTo(a.forecast30, 10)
+  })
+
+  it('computes rigorous statistical diagnostics and confidence intervals', () => {
+    expect(a.stats.olsSlope).toBeLessThan(0)
+    expect(a.stats.olsSlope).toBeCloseTo(-0.00265, 4)
+    expect(a.stats.regime).toBe('Downward (Death Cross)')
+    expect(a.stats.crossoverGap).toBeCloseTo(-0.09, 2)
+    expect(a.stats.olsR2).toBeGreaterThan(0)
+    expect(a.stats.olsStdErr).toBeGreaterThan(0)
+    expect(a.mae).toBeGreaterThan(0)
+    expect(a.maxError).toBeGreaterThan(a.mae!)
+    expect(a.forecastPct).toBeLessThan(0)
+
+    for (let i = 0; i < a.forecast.length; i++) {
+      const f = a.forecast[i]
+      expect(f.lower).toBeDefined()
+      expect(f.upper).toBeDefined()
+      expect(f.upper!).toBeGreaterThanOrEqual(f.v)
+      expect(f.lower!).toBeLessThanOrEqual(f.v)
+      if (i > 0) {
+        const prevSpread = a.forecast[i - 1].upper! - a.forecast[i - 1].lower!
+        const currSpread = f.upper! - f.lower!
+        expect(currSpread).toBeGreaterThanOrEqual(prevSpread)
+      }
+    }
     for (const f of a.forecast) {
       const d = new Date(f.t).getUTCDay()
       expect(d).not.toBe(0)
