@@ -75,7 +75,6 @@ export function DataImport({ navigate }: { navigate: (r: Route) => void }) {
     <Shell
       session={state.session}
       route="import"
-      isSample={state.dataset?.source === 'sample'}
       onLogout={() => dispatch({ type: 'logout' })}
     >
       <ScreenTitle step="02 · Data Import" title="Data Import" />

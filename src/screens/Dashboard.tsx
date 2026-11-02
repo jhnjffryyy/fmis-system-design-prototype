@@ -33,7 +33,6 @@ export function Dashboard({ navigate }: { navigate: (r: Route) => void }) {
     <Shell
       session={state.session}
       route="dashboard"
-      isSample={state.dataset.source === 'sample'}
       onLogout={() => dispatch({ type: 'logout' })}
     >
       <ScreenTitle step="01 · Dashboard" title="Dashboard">

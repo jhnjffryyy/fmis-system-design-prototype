@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react'
 import type { Session } from '../store'
 import type { Route } from '../router'
+import logoUrl from '../assets/dito-logo.jpg'
 
 const MENU: { route: Route; label: string }[] = [
   { route: 'dashboard', label: 'Dashboard' },
@@ -13,19 +14,14 @@ const MENU: { route: Route; label: string }[] = [
 export function LogoMark() {
   return (
     <span className="logo-mark" aria-hidden="true">
-      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor"
-        strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <polyline points="3,17 9,11 13,14 21,5" />
-        <polyline points="15,5 21,5 21,11" />
-      </svg>
+      <img src={logoUrl} alt="" />
     </span>
   )
 }
 
-function TopBar({ session, onLogout, isSample }: {
+function TopBar({ session, onLogout }: {
   session: Session
   onLogout?: () => void
-  isSample: boolean
 }) {
   return (
     <div className="shell-top">
@@ -35,12 +31,6 @@ function TopBar({ session, onLogout, isSample }: {
         <div className="org">DITO CME Holdings Corp.</div>
       </div>
       <div className="top-right">
-        {isSample && (
-          <span className="badge-sample">
-            <span className="full">Sample data</span>
-            <span className="short">Sample</span>
-          </span>
-        )}
         <span className="role">Role: {session.role ?? '(not yet)'}</span>
         {session.role && (
           <span className="role-chip" title={`Role: ${session.role}`}>{session.role}</span>
@@ -59,46 +49,29 @@ export function Shell({
   session,
   route,
   onLogout,
-  isSample,
-  locked,
   children,
 }: {
   session: Session
   route: Route | null
   onLogout?: () => void
-  isSample: boolean
-  locked?: boolean
   children: ReactNode
 }) {
   return (
     <div className="shell">
-      <TopBar session={session} onLogout={onLogout} isSample={isSample} />
+      <TopBar session={session} onLogout={onLogout} />
       <div className="shell-body">
-        <nav className={`shell-menu${locked ? ' locked' : ''}`} aria-label="Main menu">
+        <nav className="shell-menu" aria-label="Main menu">
           {MENU.map((m, i) => (
             <a
               key={m.route}
               href={`#/${m.route}`}
               className={route === m.route ? 'active' : ''}
               aria-current={route === m.route ? 'page' : undefined}
-              aria-disabled={locked || undefined}
-              tabIndex={locked ? -1 : undefined}
-              onClick={locked ? (e) => e.preventDefault() : undefined}
             >
               <span className="idx">{String(i + 1).padStart(2, '0')}</span>
               <span className="lbl">{m.label}</span>
             </a>
           ))}
-          {locked && (
-            <div className="locknote">
-              <svg viewBox="0 0 24 24" width="11" height="11" aria-hidden="true" fill="none"
-                stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <rect x="5" y="11" width="14" height="9" rx="2" />
-                <path d="M8 11 V8 a4 4 0 0 1 8 0 v3" />
-              </svg>
-              Locked until login
-            </div>
-          )}
         </nav>
         <main className="shell-content">{children}</main>
       </div>

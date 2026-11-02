@@ -28,7 +28,7 @@ export default function App() {
     case 'recommendation':
       return <Recommend navigate={navigate} />
     case 'report':
-      return <Report />
+      return <Report navigate={navigate} />
     default:
       return <Dashboard navigate={navigate} />
   }

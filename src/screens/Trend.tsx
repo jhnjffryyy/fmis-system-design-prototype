@@ -444,7 +444,6 @@ export function Trend({ navigate }: { navigate: (r: Route) => void }) {
     <Shell
       session={state.session}
       route="trend"
-      isSample={state.dataset.source === 'sample'}
       onLogout={() => dispatch({ type: 'logout' })}
     >
       <ScreenTitle step="03 · Trend and Forecast" title="Trend and Forecast">

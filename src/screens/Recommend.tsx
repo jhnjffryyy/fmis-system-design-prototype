@@ -22,7 +22,6 @@ export function Recommend({ navigate }: { navigate: (r: Route) => void }) {
     <Shell
       session={state.session}
       route="recommendation"
-      isSample={state.dataset.source === 'sample'}
       onLogout={() => dispatch({ type: 'logout' })}
     >
       <ScreenTitle step="04 · Recommendation and Drivers" title="Recommendation and Drivers">
