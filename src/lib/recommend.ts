@@ -12,8 +12,6 @@ export interface Recommendation {
   conditions: Condition[]
 }
 
-const r2 = (v: number) => Math.round(v * 100) / 100
-
 /**
  * The three rules:
  * 1. Sell: 30d avg below 90d avg AND forecast lower than latest price.
@@ -27,15 +25,10 @@ export function recommend(input: {
   forecast30: number
   latest: number
 }): Recommendation {
-  const avg30 = r2(input.avg30)
-  const avg90 = r2(input.avg90)
-  const fc = r2(input.forecast30)
-  const latest = r2(input.latest)
-
-  const below = avg30 < avg90
-  const above = avg30 > avg90
-  const fcLower = fc < latest
-  const fcHigher = fc > latest
+  const below = input.avg30 < input.avg90
+  const above = input.avg30 > input.avg90
+  const fcLower = input.forecast30 < input.latest
+  const fcHigher = input.forecast30 > input.latest
 
   let decision: Decision
   if (below && fcLower) decision = 'SELL'

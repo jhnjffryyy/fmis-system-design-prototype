@@ -1,0 +1,47 @@
+Skip to main content
+Stock Trend Forecasting and Advisory Module
+DITO CME Holdings Corp.
+Role: Data Analyst
+Logout
+01
+Dashboard
+02
+Data Import
+03
+Trend and Forecast
+04
+Recommendation and Drivers
+05
+Report
+Recommendation and Drivers
+Prescriptive
+What should we do?
+System recommendation
+SELL
+Sell
+Wait and watch
+Hold
+The three rules:
+Sell: the 30 day average is below the 90 day average and the forecast is lower than the latest price.
+Wait and watch: only one of those two conditions is true, so the signals are mixed.
+Hold: the 30 day average is above the 90 day average and the forecast is higher than the latest price.
+Why
+yes
+30 day average 0.60 is below the 90 day average 0.69
+yes
+The 30 day forecast 0.51 is lower than the latest price 0.59
+What this means: Recent prices are below the longer trend and the forecast is still lower. The system advises Sell.
+Drivers
+1
+Consolidated net loss after tax of Php 35.91 billion in FY2025, after Php 41.01 billion in FY2024
+2
+Total liabilities of Php 306.21 billion against total assets of Php 206.21 billion
+3
+Negative equity of Php 100.01 billion at the end of FY2025
+4
+Interest expense of Php 18.58 billion in 2024
+5
+Foreign exchange loss of Php 8.29 billion in 2024 and Php 7.32 billion in Q3 2025
+Outside factors, notes only: fuel prices and the peso to dollar rate. They help explain the price and are not part of the forecast calculation.
+The forecast is only a guide and is not professional financial advice.
+View report →

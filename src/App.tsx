@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import { useStore } from './store'
 import { useHashRoute } from './router'
 import { Login } from './screens/Login'
+import { Shell } from './components/Shell'
 import { Dashboard } from './screens/Dashboard'
 import { DataImport } from './screens/DataImport'
 import { Trend } from './screens/Trend'
@@ -18,7 +19,13 @@ export default function App() {
     if (authed && route === 'login') navigate('dashboard')
   }, [authed, route])
 
-  if (!authed) return <Login onLogin={() => navigate('dashboard')} />
+  if (!authed) {
+    return (
+      <Shell session={state.session} route={null} noMenu>
+        <Login onLogin={() => navigate('dashboard')} />
+      </Shell>
+    )
+  }
 
   switch (route) {
     case 'import':

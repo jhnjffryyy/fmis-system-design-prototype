@@ -1,0 +1,93 @@
+Skip to main content
+Stock Trend Forecasting and Advisory Module
+DITO CME Holdings Corp.
+Role: Data Analyst
+Logout
+01
+Dashboard
+02
+Data Import
+03
+Trend and Forecast
+04
+Recommendation and Drivers
+05
+Report
+Trend and Forecast
+Predictive
+What will the price do?
+Method: Time Series Analysis with 30 and 90 day moving averages and a 30 day forecast.
+Price chart
+Data table
+1M
+3M
+6M
+1Y
+2Y
+All
+Start
+2.81
+End
+0.59
+Change
+-79.00%
+High
+3.69
+Low
+0.54
+Average
+1.71
+Close, Php
+0.39
+1.10
+1.80
+2.50
+3.21
+3.91
+Next 30 days
+2024
+2025
+2026
+Vol., M
+High 3.69
+Low 0.54
+Jan 2023
+Jul 2023
+Feb 2024
+Sep 2024
+Mar 2025
+Oct 2025
+May 2026
+Dec 2026
+Closing price from Jan 3, 2023 at 2.81 to Oct 21, 2026 at 0.59. High 3.69 on Oct 19, 2023. Low 0.54 on Oct 8, 2026. Forecast day 30 0.51. The Data table tab shows the same numbers in text form.
+Closing price
+30 day average
+90 day average
+Forecast and 95% range
+Volume
+Summary
+Latest price
+0.59
+30 day average
+0.60
+90 day average
+0.69
+Trend
+Downward
+Forecast, next 30 days
+0.51
+-13.23% against the latest price
+Method: a straight line fitted to the last 90 closing prices, projected 30 trading days ahead. Weekends are skipped. Holidays are not.
+Accuracy check
+Forecast of the last 30 known prices using only earlier data, compared with the real prices.
+Average difference
+i
+0.06
+Largest difference
+i
+0.11
+MAPE
+i
+10.54%
+Customize chart
+Next →

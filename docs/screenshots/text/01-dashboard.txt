@@ -1,0 +1,54 @@
+Skip to main content
+Stock Trend Forecasting and Advisory Module
+DITO CME Holdings Corp.
+Role: Data Analyst
+Logout
+01
+Dashboard
+02
+Data Import
+03
+Trend and Forecast
+04
+Recommendation and Drivers
+05
+Report
+Dashboard
+Last updated Oct 21, 2026
+Latest price
+0.59
+Daily change
+0.00%
+30 day average
+0.60
+90 day average
+0.69
+Closing price, Jan 2023 to Oct 2026
+Close, Php
+1
+2
+3
+4
+Jan 3, 2023
+Aug 17, 2023
+Apr 11, 2024
+Nov 25, 2024
+Jul 17, 2025
+Mar 5, 2026
+Oct 21, 2026
+High 3.69
+Low 0.54
+Latest 0.59
+Closing price from Jan 3, 2023 at 2.81 to Oct 21, 2026 at 0.59. High 3.69 on Oct 19, 2023. Low 0.54 on Oct 8, 2026.
+Current recommendation
+SELL
+yes
+30 day average 0.60 is below the 90 day average 0.69
+yes
+The 30 day forecast 0.51 is lower than the latest price 0.59
+View recommendation
+Go to
+Data Import
+Trend and Forecast
+Recommendation and Drivers
+Report

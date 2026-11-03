@@ -1,0 +1,91 @@
+Skip to main content
+Stock Trend Forecasting and Advisory Module
+DITO CME Holdings Corp.
+Role: Data Analyst
+Logout
+01
+Dashboard
+02
+Data Import
+03
+Trend and Forecast
+04
+Recommendation and Drivers
+05
+Report
+Stock Trend and Advisory Report
+DITO CME Holdings Corp.
+Data as of Oct 21, 2026 
+Print report
+Latest price
+0.59
+Daily change
+0.00%
+30 day average
+0.60
+90 day average
+0.69
+First price 2.81 on Jan 3, 2023
+Total change -79.00%
+Highest close 3.69 on Oct 19, 2023
+Lowest close 0.54 on Oct 8, 2026
+Records 930
+Closing price and forecast, Jan 2023 to Oct 2026
+Predictive
+Next 30 days
+Close, Php
+1
+2
+3
+4
+Jan 3, 2023
+Aug 17, 2023
+Apr 11, 2024
+Nov 25, 2024
+Jul 17, 2025
+Mar 5, 2026
+Oct 21, 2026
+Closing price from Jan 3, 2023 at 2.81 to Oct 21, 2026 at 0.59. High 3.69 on Oct 19, 2023. Low 0.54 on Oct 8, 2026. Forecast day 30 0.51.
+Closing price
+30 day average
+90 day average
+Forecast and 95% range
+Current recommendation
+Prescriptive
+SELL
+yes
+30 day average 0.60 is below the 90 day average 0.69
+yes
+The 30 day forecast 0.51 is lower than the latest price 0.59
+Forecast day 30: 0.51, -13.23% against the latest price
+Accuracy check: average difference 0.06, largest difference 0.11, MAPE 10.54%
+Sell
+Wait and watch
+Hold
+View recommendation
+Drivers
+1
+Consolidated net loss after tax of Php 35.91 billion in FY2025, after Php 41.01 billion in FY2024
+2
+Total liabilities of Php 306.21 billion against total assets of Php 206.21 billion
+3
+Negative equity of Php 100.01 billion at the end of FY2025
+4
+Interest expense of Php 18.58 billion in 2024
+5
+Foreign exchange loss of Php 8.29 billion in 2024 and Php 7.32 billion in Q3 2025
+Outside factors, notes only: fuel prices and the peso to dollar rate. They help explain the price and are not part of the forecast calculation.
+Notes and limitations
+Public data from Investing.com.
+Daily prices from Jan 3, 2023 to Oct 21, 2026 of the loaded file only.
+Forecast covers 30 days only.
+Stock prices are very volatile, so the forecast is only a guide and cannot promise what will happen.
+The recommendation follows fixed rules and is not professional financial advice.
+The drivers are not calculated inside the forecast.
+The system cannot confirm that prices match the source unless they are compared with it.
+CFO: view only access.
+Go to
+Dashboard
+Data Import
+Trend and Forecast
+Recommendation and Drivers

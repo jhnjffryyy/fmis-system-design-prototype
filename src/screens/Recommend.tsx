@@ -1,21 +1,24 @@
-import { useMemo } from 'react'
-import { useStore } from '../store'
-import { analyze } from '../lib/analysis'
-import { recommend } from '../lib/recommend'
+import { useStore, useAnalysis } from '../store'
 import { DRIVERS, OUTSIDE_FACTORS, DISCLAIMER } from '../data/drivers'
-import { Shell, ScreenTitle, Tag, CheckIcon, CrossIcon } from '../components/Shell'
+import { Shell, ScreenTitle, Tag, CheckIcon, CrossIcon, EmptyState } from '../components/Shell'
 import type { Route } from '../router'
 
 const OPTS = ['SELL', 'WAIT AND WATCH', 'HOLD'] as const
 
 export function Recommend({ navigate }: { navigate: (r: Route) => void }) {
   const { state, dispatch } = useStore()
-  const a = useMemo(
-    () => (state.dataset ? analyze(state.dataset.rows) : null),
-    [state.dataset],
-  )
-  if (!a || !state.dataset) return null
-  const rec = recommend(a)
+  const { a, rec } = useAnalysis()
+  if (!a || !rec || !state.dataset) {
+    return (
+      <Shell
+        session={state.session}
+        route="recommendation"
+        onLogout={() => dispatch({ type: 'logout' })}
+      >
+        <EmptyState navigate={navigate} />
+      </Shell>
+    )
+  }
   const cls = rec.decision === 'SELL' ? 'sell' : rec.decision === 'HOLD' ? 'hold' : 'wait'
 
   return (
@@ -24,13 +27,13 @@ export function Recommend({ navigate }: { navigate: (r: Route) => void }) {
       route="recommendation"
       onLogout={() => dispatch({ type: 'logout' })}
     >
-      <ScreenTitle step="04 · Recommendation and Drivers" title="Recommendation and Drivers">
+      <ScreenTitle title="Recommendation and Drivers">
         <Tag kind="greentag" text="Prescriptive" />
         <span className="q">What should we do?</span>
       </ScreenTitle>
 
-      <div className={`wf-box big-decision ${cls}`}>
-        <div className="eyebrow">System recommendation</div>
+      <div className={`card big-decision ${cls}`}>
+        <div className="label">System recommendation</div>
         <div className="word">{rec.decision}</div>
       </div>
       <div className="opts" role="group" aria-label="Possible recommendations">
@@ -47,7 +50,7 @@ export function Recommend({ navigate }: { navigate: (r: Route) => void }) {
         })}
       </div>
 
-      <div className="wf-box rules-box">
+      <div className="card rules-box">
         <b>The three rules:</b>
         <ol>
           <li><b>Sell:</b> the 30 day average is below the 90 day average and the forecast is lower than the latest price.</li>
@@ -57,8 +60,8 @@ export function Recommend({ navigate }: { navigate: (r: Route) => void }) {
       </div>
 
       <div className="f8-cols">
-        <div className="wf-box">
-          <h5>WHY</h5>
+        <div className="card">
+          <h5>Why</h5>
           {rec.conditions.map((c) => (
             <div className="check" key={c.text}>
               <span className={c.yes ? 'yes' : 'no'}>
@@ -67,9 +70,17 @@ export function Recommend({ navigate }: { navigate: (r: Route) => void }) {
               <span>{c.text}</span>
             </div>
           ))}
+          <div className="means">
+            <b>What this means:</b>{' '}
+            {rec.decision === 'SELL'
+              ? 'Recent prices are below the longer trend and the forecast is still lower. The system advises Sell.'
+              : rec.decision === 'HOLD'
+              ? 'Recent prices are above the longer trend and the forecast is higher. The system advises Hold.'
+              : 'The signals do not agree, so the system advises waiting and watching.'}
+          </div>
         </div>
-        <div className="wf-box">
-          <h5>DRIVERS</h5>
+        <div className="card">
+          <h5>Drivers</h5>
           <ol className="drivers ledger">
             {DRIVERS.map((d, i) => (
               <li key={d}>
@@ -87,12 +98,12 @@ export function Recommend({ navigate }: { navigate: (r: Route) => void }) {
           <circle cx="12" cy="12" r="9" />
           <path d="M12 11 v6 M12 7 v.5" />
         </svg>
-        <span><b>Outside factors (notes only):</b> {OUTSIDE_FACTORS}</span>
+        <span><b>Outside factors, notes only:</b>{OUTSIDE_FACTORS.slice('Outside factors, notes only:'.length)}</span>
       </div>
 
       <div className="row-between">
         <span className="disclaimer">{DISCLAIMER}</span>
-        <button className="btn primary" onClick={() => navigate('report')}>View Report</button>
+        <button className="btn primary" onClick={() => navigate('report')}>View report →</button>
       </div>
     </Shell>
   )

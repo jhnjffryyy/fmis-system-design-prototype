@@ -7,8 +7,10 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "preview": "vite preview",
-    "test": "vitest run",
-    "sample": "node scripts/generate-sample-csv.mjs"
+    "test": "vitest run src/test",
+    "demo-file": "node scripts/build-demo-errors.mjs",
+    "qa": "node scripts/qa-shots.mjs",
+    "contrast": "node scripts/contrast-check.mjs"
   },
   "dependencies": {
     "react": "19.3.1",

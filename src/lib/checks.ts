@@ -1,4 +1,5 @@
 import { parseCsv } from './csv'
+import { MIN_RECORDS, MAX_FILE_BYTES } from '../config'
 
 export interface PricePoint {
   /** ISO date string yyyy-mm-dd */
@@ -31,25 +32,40 @@ export interface CheckResult {
 const DATE_RE = /^(\d{2})\/(\d{2})\/(\d{4})$/
 const ISO_RE = /^(\d{4})-(\d{2})-(\d{2})$/
 
+function utcDay(y: number, mo: number, d: number): { iso: string; t: number } | null {
+  if (mo < 1 || mo > 12 || d < 1 || d > 31) return null
+  const t = Date.UTC(y, mo - 1, d)
+  const dt = new Date(t)
+  if (dt.getUTCFullYear() !== y || dt.getUTCMonth() !== mo - 1 || dt.getUTCDate() !== d) {
+    return null // impossible calendar date like 02/31/2026
+  }
+  const iso = `${y}-${String(mo).padStart(2, '0')}-${String(d).padStart(2, '0')}`
+  return { iso, t }
+}
+
 function parseDate(s: string): { iso: string; t: number } | null {
   let m = DATE_RE.exec(s)
-  if (m) {
-    const mo = +m[1]
-    if (mo < 1 || mo > 12 || +m[2] < 1 || +m[2] > 31) return null
-    const iso = `${m[3]}-${m[1]}-${m[2]}`
-    return { iso, t: Date.UTC(+m[3], mo - 1, +m[2]) }
-  }
+  if (m) return utcDay(+m[3], +m[1], +m[2])
   m = ISO_RE.exec(s)
-  if (m) {
-    const mo = +m[2]
-    if (mo < 1 || mo > 12 || +m[3] < 1 || +m[3] > 31) return null
-    return { iso: s, t: Date.UTC(+m[1], mo - 1, +m[3]) }
-  }
+  if (m) return utcDay(+m[1], +m[2], +m[3])
   return null
 }
 
+export function checkFileSize(bytes: number): string | null {
+  return bytes > MAX_FILE_BYTES ? 'File is larger than 5 MB. Choose a smaller CSV file.' : null
+}
+
+const missingColumn = (name: string): Problem => ({
+  row: 0,
+  message: `File is missing the ${name} column. Add a column named ${name} and upload again.`,
+})
+
+/** file-level problems (row 0) sort after row problems */
+const byRow = (a: Problem, b: Problem) =>
+  (a.row === 0 ? 1 : 0) - (b.row === 0 ? 1 : 0) || a.row - b.row
+
 /**
- * Run the four file checks on raw CSV text.
+ * Run the five file checks on raw CSV text.
  * Row numbers are 1-based, header excluded.
  */
 export function checkFile(text: string): CheckResult {
@@ -62,9 +78,12 @@ export function checkFile(text: string): CheckResult {
   const vi = headers.indexOf('Vol.')
   const ci = headers.indexOf('Change %')
   if (di < 0 || pi < 0) {
+    const problems: Problem[] = []
+    if (di < 0) problems.push(missingColumn('Date'))
+    if (pi < 0) problems.push(missingColumn('Price'))
     return {
       ok: false,
-      problems: [{ row: 0, message: 'File is missing the Date or Price column' }],
+      problems,
       records: records.length,
       firstDate: null,
       lastDate: null,
@@ -96,7 +115,10 @@ export function checkFile(text: string): CheckResult {
     // date
     const d = rawDate === '' ? null : parseDate(rawDate)
     if (rawDate === '' || !d) {
-      problems.push({ row: n, message: `Row ${n}: date is not valid` })
+      problems.push({
+        row: n,
+        message: `Row ${n}: date is not valid. Use MM/DD/YYYY or YYYY-MM-DD.`,
+      })
       parsed.push(null)
       return
     }
@@ -163,17 +185,17 @@ export function checkFile(text: string): CheckResult {
     })
   })
 
-  const rows = parsed.filter((p): p is PricePoint => p !== null).sort((a, b) => a.t - b.t)
   // the analysis needs a 90-day forecast window plus a 30-day back-test
-  if (problems.length === 0 && rows.length < 120) {
+  if (records.length < MIN_RECORDS) {
     problems.push({
       row: 0,
-      message: `File needs at least 120 records (found ${rows.length})`,
+      message: `File needs at least ${MIN_RECORDS} records. Found ${records.length}.`,
     })
   }
+  const rows = parsed.filter((p): p is PricePoint => p !== null).sort((a, b) => a.t - b.t)
   return {
     ok: problems.length === 0,
-    problems: problems.sort((a, b) => a.row - b.row),
+    problems: problems.sort(byRow),
     records: records.length,
     firstDate: rows.length ? rows[0].iso : null,
     lastDate: rows.length ? rows[rows.length - 1].iso : null,

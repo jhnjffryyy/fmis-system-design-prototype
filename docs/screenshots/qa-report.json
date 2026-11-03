@@ -1,0 +1,118 @@
+{
+  "1920x1080": {
+    "screens": {
+      "00-login": {
+        "hScroll": false,
+        "overflow": []
+      },
+      "01-dashboard": {
+        "hScroll": false,
+        "overflow": []
+      },
+      "02-import": {
+        "hScroll": false,
+        "overflow": []
+      },
+      "03-trend": {
+        "hScroll": false,
+        "overflow": []
+      },
+      "04-recommendation": {
+        "hScroll": false,
+        "overflow": []
+      },
+      "05-report": {
+        "hScroll": false,
+        "overflow": []
+      }
+    },
+    "console": []
+  },
+  "1366x768": {
+    "screens": {
+      "00-login": {
+        "hScroll": false,
+        "overflow": []
+      },
+      "01-dashboard": {
+        "hScroll": false,
+        "overflow": []
+      },
+      "02-import": {
+        "hScroll": false,
+        "overflow": []
+      },
+      "03-trend": {
+        "hScroll": false,
+        "overflow": []
+      },
+      "04-recommendation": {
+        "hScroll": false,
+        "overflow": []
+      },
+      "05-report": {
+        "hScroll": false,
+        "overflow": []
+      }
+    },
+    "console": []
+  },
+  "1024x768": {
+    "screens": {
+      "00-login": {
+        "hScroll": false,
+        "overflow": []
+      },
+      "01-dashboard": {
+        "hScroll": false,
+        "overflow": []
+      },
+      "02-import": {
+        "hScroll": false,
+        "overflow": []
+      },
+      "03-trend": {
+        "hScroll": false,
+        "overflow": []
+      },
+      "04-recommendation": {
+        "hScroll": false,
+        "overflow": []
+      },
+      "05-report": {
+        "hScroll": false,
+        "overflow": []
+      }
+    },
+    "console": []
+  },
+  "390x844": {
+    "screens": {
+      "00-login": {
+        "hScroll": false,
+        "overflow": []
+      },
+      "01-dashboard": {
+        "hScroll": false,
+        "overflow": []
+      },
+      "02-import": {
+        "hScroll": false,
+        "overflow": []
+      },
+      "03-trend": {
+        "hScroll": false,
+        "overflow": []
+      },
+      "04-recommendation": {
+        "hScroll": false,
+        "overflow": []
+      },
+      "05-report": {
+        "hScroll": false,
+        "overflow": []
+      }
+    },
+    "console": []
+  }
+}

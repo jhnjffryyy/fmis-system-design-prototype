@@ -1,7 +1,13 @@
-import { createContext, useContext, useEffect, useReducer } from 'react'
+import { createContext, useContext, useEffect, useMemo, useReducer } from 'react'
 import type { ReactNode } from 'react'
 import { checkFile, type PricePoint } from './lib/checks'
-import sampleCsv from './data/sample/DITO-Historical-Data.csv?raw'
+import { analyze, type Analysis } from './lib/analysis'
+import { recommend, type Recommendation } from './lib/recommend'
+import bundledCsv from './data/prices/DITO-Historical-Data.csv?raw'
+import demoErrorsCsv from './data/demo/DITO-demo-with-errors.csv?raw'
+
+export const BUNDLED_CSV = bundledCsv
+export const DEMO_ERRORS_CSV = demoErrorsCsv
 
 export interface Session {
   user: string | null
@@ -10,7 +16,7 @@ export interface Session {
 
 export interface Dataset {
   fileName: string
-  source: 'sample' | 'uploaded'
+  source: 'bundled' | 'uploaded'
   importedAt: string
   rows: PricePoint[]
 }
@@ -25,35 +31,50 @@ type Action =
   | { type: 'logout' }
   | { type: 'dataset'; dataset: Dataset }
 
-const KEY = 'stfa-state-v1'
+const SESSION_KEY = 'stfa-session-v2'
+const DATASET_KEY = 'stfa-dataset-v2'
 
 function seedDataset(): Dataset {
-  const res = checkFile(sampleCsv)
+  const res = checkFile(bundledCsv)
   return {
     fileName: 'DITO-Historical-Data.csv',
-    source: 'sample',
+    source: 'bundled',
     importedAt: new Date().toISOString(),
     rows: res.rows,
   }
 }
 
-function load(): State {
+function loadSession(): Session {
   try {
-    const raw = localStorage.getItem(KEY)
+    const raw = sessionStorage.getItem(SESSION_KEY)
     if (raw) {
-      const s = JSON.parse(raw) as State
-      if (s && s.dataset && Array.isArray(s.dataset.rows)) {
-        s.dataset.rows = s.dataset.rows.map((r) => ({
-          ...r,
-          t: Date.parse(`${r.iso}T00:00:00Z`),
-        }))
-        return s
+      const s = JSON.parse(raw) as Session
+      if (s && 'user' in s && 'role' in s) return s
+    }
+  } catch {
+    /* corrupted session -> logged out */
+  }
+  return { user: null, role: null }
+}
+
+function loadDataset(): Dataset {
+  try {
+    const raw = localStorage.getItem(DATASET_KEY)
+    if (raw) {
+      const d = JSON.parse(raw) as Dataset
+      if (d && Array.isArray(d.rows) && d.rows.length) {
+        d.rows = d.rows.map((r) => ({ ...r, t: Date.parse(`${r.iso}T00:00:00Z`) }))
+        return d
       }
     }
   } catch {
-    /* corrupted state -> reseed */
+    /* corrupted dataset -> reseed */
   }
-  return { session: { user: null, role: null }, dataset: seedDataset() }
+  return seedDataset()
+}
+
+function load(): State {
+  return { session: loadSession(), dataset: loadDataset() }
 }
 
 function reducer(state: State, action: Action): State {
@@ -67,28 +88,54 @@ function reducer(state: State, action: Action): State {
   }
 }
 
-const StoreCtx = createContext<{ state: State; dispatch: React.Dispatch<Action> }>({
+interface StoreValue {
+  state: State
+  dispatch: React.Dispatch<Action>
+  a: Analysis | null
+  rec: Recommendation | null
+}
+
+const StoreCtx = createContext<StoreValue>({
   state: { session: { user: null, role: null }, dataset: null },
   dispatch: () => {},
+  a: null,
+  rec: null,
 })
 
 export function StoreProvider({ children }: { children: ReactNode }) {
   const [state, dispatch] = useReducer(reducer, undefined, load)
+
+  const a = useMemo(() => (state.dataset ? analyze(state.dataset.rows) : null), [state.dataset])
+  const rec = useMemo(() => (a ? recommend(a) : null), [a])
+
   useEffect(() => {
     try {
-      localStorage.setItem(KEY, JSON.stringify(state))
+      sessionStorage.setItem(SESSION_KEY, JSON.stringify(state.session))
+    } catch {
+      /* storage unavailable */
+    }
+  }, [state.session])
+  useEffect(() => {
+    try {
+      localStorage.setItem(DATASET_KEY, JSON.stringify(state.dataset))
     } catch {
       /* storage full or unavailable */
     }
-  }, [state])
-  return <StoreCtx.Provider value={{ state, dispatch }}>{children}</StoreCtx.Provider>
+  }, [state.dataset])
+
+  const value = useMemo(() => ({ state, dispatch, a, rec }), [state, a, rec])
+  return <StoreCtx.Provider value={value}>{children}</StoreCtx.Provider>
 }
 
 export const useStore = () => useContext(StoreCtx)
+
+/** shared analysis + recommendation for the active dataset */
+export const useAnalysis = () => {
+  const { a, rec } = useContext(StoreCtx)
+  return { a, rec }
+}
 
 export const ACCOUNTS = [
   { user: 'analyst01', pass: 'dito2026', role: 'Data Analyst' },
   { user: 'controller01', pass: 'dito2026', role: 'Controller' },
 ]
-export const SAMPLE_CSV = sampleCsv
-export { default as SAMPLE_ERRORS_CSV } from './data/sample/DITO-Historical-Data-with-errors.csv?raw'

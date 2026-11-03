@@ -1,0 +1,24 @@
+Skip to main content
+Stock Trend Forecasting and Advisory Module
+DITO CME Holdings Corp.
+Role: Data Analyst
+Logout
+01
+Dashboard
+02
+Data Import
+03
+Trend and Forecast
+04
+Recommendation and Drivers
+05
+Report
+Data Import
+File check failed
+Row 4: price is empty
+Row 8: date is repeated
+Row 13: date is out of order
+Row 18: price is zero
+File needs at least 120 records. Found 23.
+The previous valid file stays in use: DITO-Historical-Data.csv, 930 records to Oct 21, 2026.
+Fix the file and upload again

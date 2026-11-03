@@ -1,0 +1,146 @@
+[
+  {
+    "id": "1a",
+    "name": "FR-G1 logged-out #/report shows Login",
+    "pass": true,
+    "evidence": "login-card=true"
+  },
+  {
+    "id": "1b",
+    "name": "FR-G2 logout + history.back stays on Login",
+    "pass": true,
+    "evidence": "login=true protected=false"
+  },
+  {
+    "id": "1c",
+    "name": "FR-L6 reload keeps session and screen",
+    "pass": true,
+    "evidence": "hash=#/dashboard dashboard=true"
+  },
+  {
+    "id": "2",
+    "name": "analyst walks all screens via on-screen buttons",
+    "pass": true,
+    "evidence": "ok=true 4175 ms"
+  },
+  {
+    "id": "3a",
+    "name": "demo file with errors lists the 5 problems",
+    "pass": true,
+    "evidence": "\"File check failed\\nRow 4: price is empty\\nRow 8: date is repeated\\nRow 13: date is out of order\\nRow 18: price is zero\\nFile needs at least 120 records. Found 23.\\nThe previous valid file stays in use: DITO-Historical-Data.csv, 930 records to Oct 21, 2026.\""
+  },
+  {
+    "id": "3b",
+    "name": "demo file passes",
+    "pass": true,
+    "evidence": "\"File check passed\\nNo price is empty\\nNo date is repeated\\nDates are in order\\nAll prices are above zero\\nFile has at least 120 records\\n930 records, Jan 3, 2023 to Oct 21, 2026, no missing values, no repea\""
+  },
+  {
+    "id": "4a",
+    "name": "reversed file passes, dashboard numbers identical",
+    "pass": true,
+    "evidence": "passed=true latest0.59=true"
+  },
+  {
+    "id": "4b",
+    "name": "shuffled file fails: date out of order",
+    "pass": true,
+    "evidence": "Row 3: date is out of order"
+  },
+  {
+    "id": "4c",
+    "name": "missing Price column names Price",
+    "pass": true,
+    "evidence": "message names Price"
+  },
+  {
+    "id": "4d",
+    "name": ".txt rejected with CSV message",
+    "pass": true,
+    "evidence": "rejected"
+  },
+  {
+    "id": "4e",
+    "name": ">5MB file rejected",
+    "pass": true,
+    "evidence": "rejected"
+  },
+  {
+    "id": "4f",
+    "name": "bad date names the row",
+    "pass": true,
+    "evidence": "Row 10: date is not valid"
+  },
+  {
+    "id": "5-hold",
+    "name": "upload test-hold.csv -> HOLD shown everywhere",
+    "pass": true,
+    "evidence": "word=HOLD means-ok=true g7=true shot=docs/qa/rec-hold.png"
+  },
+  {
+    "id": "5-wait",
+    "name": "upload test-wait.csv -> WAIT AND WATCH shown everywhere",
+    "pass": true,
+    "evidence": "word=WAIT AND WATCH means-ok=true g7=true shot=docs/qa/rec-wait.png"
+  },
+  {
+    "id": "5-sell",
+    "name": "upload test-sell.csv -> SELL shown everywhere",
+    "pass": true,
+    "evidence": "word=SELL means-ok=true g7=true shot=docs/qa/rec-sell.png"
+  },
+  {
+    "id": "5z",
+    "name": "restore bundled dataset via Use demo file",
+    "pass": true,
+    "evidence": "pass card shown"
+  },
+  {
+    "id": "6a",
+    "name": "controller sees read-only import",
+    "pass": true,
+    "evidence": "msg=true disabled=true"
+  },
+  {
+    "id": "6b",
+    "name": "controller print report works",
+    "pass": true,
+    "evidence": "button-clicked pdfBytes=378432"
+  },
+  {
+    "id": "7a",
+    "name": "tiles identical on Dashboard / Trend / Report",
+    "pass": true,
+    "evidence": "dashboard=[\"0.59\",\"0.00%\",\"0.60\",\"0.69\"] trend=[\"0.59\",\"0.60\",\"0.69\",\"Downward\",\"0.06\",\"0.11\",\"10.54%\"] report=[\"0.59\",\"0.00%\",\"0.60\",\"0.69\"]"
+  },
+  {
+    "id": "7b",
+    "name": "data table first row matches chart tooltip",
+    "pass": true,
+    "evidence": "table=[Oct 21, 2026,0.59] tip has \"Oct 21, 2026\\nClose 0.59\\nChange 0.00%\\n30 day average 0.60\\n90 day average 0.69\\nVol\""
+  },
+  {
+    "id": "8",
+    "name": "volume tooltip Oct 16 2026 shows 30.11 M",
+    "pass": true,
+    "evidence": "\"Oct 16, 2026\\nClose 0.60\\nChange +3.45%\\n30 day average 0.60\\n90 day average 0.70\\nVolume 30.11 M\""
+  },
+  {
+    "id": "9",
+    "name": "NFR-1 first load + recompute speed",
+    "pass": true,
+    "evidence": "navigation 252 ms, first-contentful-paint 308 ms, vitest checkFile+analyze 5000 rows < 1000 ms (see fixtures.test.ts)"
+  },
+  {
+    "id": "10a",
+    "name": "dist has no external http(s) references",
+    "pass": true,
+    "evidence": "0 refs"
+  },
+  {
+    "id": "10b",
+    "name": "offline file:// load: login + dashboard render",
+    "pass": true,
+    "evidence": "login=true dashboard=true (console errors via normal qa run = 0)"
+  }
+]
