@@ -577,7 +577,7 @@ export function Trend({ navigate }: { navigate: (r: Route) => void }) {
       </ScreenTitle>
 
       <div className="method mut" style={{ margin: '-8px 0 14px' }}>
-        Method: Time Series Analysis with 30 and 90 day moving averages and a 30 day forecast.
+        Method: Time Series Analysis, using Simple Moving Average and Linear Trend Regression, with a 30 day forecast.
       </div>
 
       <div className="f7-cols">
